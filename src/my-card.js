@@ -14,6 +14,8 @@ export class MyCard extends LitElement {
   constructor() {
     super();
     this.title = "My card";
+    this.description = "A 955 cc Superquadro V-twin engine sport bike, Ducati Panigale V2, is one of the fastest motorbike model. It has a top speed of 186 mph with 155 horsepower which makes it an ourstanding sport bike with unique features and performance.";
+    this.link = "https://hax.psu.edu";
   }
 
   static get styles() {
