@@ -1,10 +1,5 @@
 import { LitElement, html, css } from 'lit';
 
-/**
- * Now it's your turn. Here's what we need to try and do
- * 1. 
- */
-
 export class MyCard extends LitElement {
 
   static get tag() {
@@ -14,8 +9,11 @@ export class MyCard extends LitElement {
   constructor() {
     super();
     this.title = "My card";
-    this.description = "A 955 cc Superquadro V-twin engine sport bike, Ducati Panigale V2, is one of the fastest motorbike model. It has a top speed of 186 mph with 155 horsepower which makes it an ourstanding sport bike with unique features and performance.";
+    this.description = "This is a Beautiful Flower. NICE!";
     this.link = "https://hax.psu.edu";
+    this.btntext = "Detail";
+    this.fancy = false;
+    this.image = "https://www.thespruce.com/thmb/UvUq2d5afwavMHdm7PcUNtbAowQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/the-most-beautiful-garden-flowers-4690011-7-f6963a3136ee47dba5f85d786b31ac7d.jpg";
   }
 
   static get styles() {
@@ -26,6 +24,13 @@ export class MyCard extends LitElement {
       :root, html, body {
         font-size: 16px; 
         --basic-color: beige;
+      }
+
+      :host([fancy]) {
+        display: block;
+        background-color: pink;
+        border: 2px #a0fa05;
+        box-shadow: 10px 5px 5px red;
       }
 
       a {
@@ -54,7 +59,7 @@ export class MyCard extends LitElement {
         font-size: Verdana;
       }
 
-      .btn {
+      .button {
         background-color: pink;
         padding: 16px 16px 16px 16px;
         font-size: 16px;
@@ -74,14 +79,12 @@ export class MyCard extends LitElement {
         }
       } 
 
-      @media (min-width: 500px) and (max-width: 800px)
-      {
-        .btn {
+    
+      .btn {
           background-color: pink;
           padding: 4px;
           font-size: 16px;
           display: inline; 
-        }
       }
 
       #cardlist {
@@ -91,46 +94,70 @@ export class MyCard extends LitElement {
 
       .change-color {
         background-color: #95EDF0;
+        color:#000;
       }
 
       .reset-color {
         background-color: beige;
       }
+
+      details summary {
+        text-align: left;
+        font-size: 20px;
+        padding: 8px 0;
+      }
+
+      details[open] summary {
+        font-weight: bold;
+      }
+  
+      details div {
+        border: 2px solid black;
+        text-align: left;
+        padding: 8px;
+        height: 70px;
+        overflow: auto;
+      }
     `;}
+
+  // put this anywhere on the MyCard class; just above render() is probably good
+  openChanged(e) {
+    console.log(e.newState);
+    if (e.newState === "open") {
+      this.fancy = true;
+    }
+    else {
+      this.fancy = false;
+    }
+  }
 
   render() {
     return html`
-      <div>${this.title}</div>
-      <div class="control-wrapper">
-    <button class="duplicate">Clone Card</button>
-    <button id="changetitle">Change Title</button>
-    <button id="changeimage">Change Image</button>
-    <button id="changebg">Change background</button>
-    <button id="deletecard">Delete Card</button>
-    <button id="resetcard">Reset Card</button>
-  </div>
-
+  
+  <div>${this.title}</div>
   <div id="cardlist">
     <div class="card">
       <p class="cardTitle"> 
-        Ducati Panigale V2
+        ${this.title}
       </p>
 
-    <img class="cardImage" src="https://cdn.motor1.com/images/mgl/BXQ9kZ/s1/2024-ducati-panigale-v2---black-on-black---studio---right-side.jpg" alt="Ducati Panigale V2">
-  
+    <img class="cardImage" src=${this.image}>
+
+    <h3>${this.title}</h3>
+
+    <details ?open="${this.fancy}" @toggle="${this.openChanged}">
+      <summary>Description</summary>
+      <div>
+        <slot>${this.description}</slot>
+      </div>
+    </details>
+    
     <br><br>
-  
-    <center>
-      <d class="cardText">
-        A 955 cc Superquadro V-twin engine sport bike, Ducati Panigale V2, is one of the fastest motorbike model. It has a top speed of 186 mph with 155 horsepower which makes it an ourstanding sport bike with unique features and performance.
-      
-      </d>
-    </center>
-  
+
   <br>
   
-    <a href="https://hax.psu.edu">
-      <button class="btn">Details</button>
+    <a href=${this.link} target="_blank">
+      <button class = "btn"> ${this.btntext} </button>
     </a>
   
   </div>
@@ -138,9 +165,14 @@ export class MyCard extends LitElement {
 
   static get properties() {
     return {
-      title: { type: String },
+      title: { type: String, reflect: true },
+      description: { type: String },
+      fancy: { type: Boolean, reflect: true },
+      image: { type: String, reflect: true },
+      link: { type: String },
     };
   }
 }
 
 globalThis.customElements.define(MyCard.tag, MyCard);
+

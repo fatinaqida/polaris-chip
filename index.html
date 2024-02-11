@@ -14,11 +14,38 @@
       margin: 0;
       padding: 0;
       font-family: sans-serif;
-      background-color: #ededed;
+      background-color: #350992;
     }
     polaris-chip {
       margin: 16px;
     }
+
+    .cardContainer {
+      display: inline-flex;
+      overflow-x: scroll;
+    }
+
+
+    button {
+        background: #fff;
+        border-radius: 100px;
+        padding: 16px 16px 16px 16px;
+        font-weight: bold;
+        border: solid 2px black;
+        box-sizing: border-box;
+        box-shadow: 16px 16 16px 16px black;
+        transition: all .3s;
+        color: #000;
+        position: center;
+        bottom: 12px;
+      }
+    button:hover {
+        cursor: pointer;
+        background: #000;
+        color: #fff;
+        transition: all .3s;
+      }
+
   </style>
   <title>polaris-chip / my-card</title>
 </head>
@@ -33,16 +60,137 @@
   <polaris-chip title="My Love" link="https://m.media-amazon.com/images/M/MV5BMWRkMGMxODItOGRlNi00ODYxLWFiZTItNDgwMmNhZGM2NWIzXkEyXkFqcGdeQXVyMjUyNDk2ODc@._V1_.jpg"></polaris-chip> 
 
   <h1>my-card</h1>
-  <my-card></my-card>
-  <my-card></my-card>
-  <my-card></my-card>
-  <my-card></my-card>
-  <my-card></my-card>
+  <div class="control-wrapper">
+    <button id="duplicate">Clone Card</button>
+    <button id="changetitle">Change Title</button>
+    <button id="changeimage">Change Image</button>
+    <button id="changebg">Toggle Color</button>
+    <button id="deletecard">Delete Card</button>
+  </div>
+  
+  <br>
 
+<div class="cardContainer">
+  <my-card 
+    title="Flowers" 
+    image="https://www.thespruce.com/thmb/UvUq2d5afwavMHdm7PcUNtbAowQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/the-most-beautiful-garden-flowers-4690011-7-f6963a3136ee47dba5f85d786b31ac7d.jpg"
+    link="https://media.tenor.com/J6xumGwaxh8AAAAi/flowers-flower.gif">
+    <p>
+      This is a<strong> Beautiful Flower</strong>. NICE!
+    </p>
+  </my-card>
+  <br>
+
+  <my-card 
+    title="Kitten" 
+    fancy image="https://cdn.shopify.com/s/files/1/0997/4496/articles/Do_kittens_shed_f9917858-b52f-4192-bf8e-4f46ed98e9aa.jpg?v=1698540349"
+    link="https://media.istockphoto.com/id/1293763250/photo/cute-kitten-licking-glass-table-with-copy-space.jpg?s=612x612&w=0&k=20&c=JbHxMGlHpB3BwgQChCDLt-Iwbl2MYX-SS_f8oQa8RO0=">
+    <p>
+      This is <strong> My Kitten</strong>. I love my kitten. 
+    </p>
+    </my-card>
+  <br>
+
+  <my-card
+    title="Sun" 
+    image="https://static.vecteezy.com/system/resources/previews/006/101/383/original/cute-cartoon-sun-free-vector.jpg"
+    link="https://i.pinimg.com/originals/41/60/cc/4160ccda58b623c8270183813c9e2ca1.gif">
+    <p>
+      This is a<strong> Happy Sun</strong>. Look at that!. 
+    </p>
+  </my-card>
+
+  <br>
+  <my-card
+    title="Moon" 
+    fancy image="https://img.freepik.com/free-vector/moon-elements-illustration-collection_23-2148890333.jpg"
+    link="https://i.imgur.com/hg1HdtT.gif">
+    <p>
+      This is a<strong> Happy Moon</strong>. I'm so Sleepy!. 
+    </p>
+  </my-card>
+
+  <br>
+  <my-card 
+    title="Ducati Panigale V2" 
+    image="https://cdn.motor1.com/images/mgl/BXQ9kZ/s1/2024-ducati-panigale-v2---black-on-black---studio---right-side.jpg"
+    link="https://img1.picmix.com/output/pic/normal/9/6/5/0/9890569_6bb7b.gif">
+    <p> 
+      A 955 cc Superquadro V-twin engine sport bike, <strong>Ducati Panigale V2</strong>, is one of the fastest motorbike model. It has a top speed of 186 mph with 155 horsepower which makes it an ourstanding sport bike with unique features and performance.
+    </p>  
+  </my-card>
+
+  <my-card 
+    title="Fresh Prince" 
+    fancy image="https://cdn01.justjared.com/wp-content/uploads/headlines/2015/04/fresh-prince-viral-announcement.jpg"
+    link="https://www.youtube.com/watch?v=AVbQo3IOC_A">
+    <p> 
+      <strong>Hello </strong> There!
+    </p>  
+  </my-card>
+
+</div>
 
   <!-- this is what is bringing in the definition for this tag -->
   <script type="module" src="./src/polaris-chip.js"></script>
   <script type="module" src="./src/my-card.js"></script>
-</body>
 
+<script>
+
+  //duplicate the card
+  document.querySelector('#duplicate').addEventListener('click', function(event) {
+  const list = document.querySelector('.cardContainer');
+  const elements = list.querySelectorAll('my-card');
+
+  if (elements.length > 0 && elements.length < 10) {
+    const first = elements[0];
+    const latest = document.createElement('my-card');
+
+    latest.title = first.title;
+    latest.image = first.image;
+    
+    list.appendChild(latest);
+  }
+});
+
+//change the card title
+document.querySelector('#changetitle').addEventListener('click', function(e) {
+  const first = document.querySelector('.cardContainer my-card');
+  if(first) {
+    first.title = "This is AWESOME!"
+  }
+})
+
+//change the card image
+document.querySelector('#changeimage').addEventListener('click', function(e) {
+  const first = document.querySelector('.cardContainer my-card');
+  if(first) 
+  {   
+    first.image = "https://codaio.imgix.net/docs/XzMT8YgCW_/blobs/bl-74MUdE_FWl/32f9747d2e793a635f2b66b876bcd4181c6a188331cceee423112b28d26b8d69b280c93897ec51b9b569a6442f0d813dd6c661c21bfdf05ec0fd009d249fd9b58eff664256801fe6e8fe2ecb66fef3a180ca8162391eba432319362a2c118311542665b5?fit=crop&ar=1.91%3A1&fm=jpg";
+  }
+})
+
+//change the card background color
+document.querySelector('#changebg').addEventListener('click', function(e) {
+  const myCards = document.querySelectorAll('my-card');
+
+  myCards.forEach(card => {
+      card.shadowRoot.querySelector('.card').classList.toggle('change-color');
+    });
+  });
+
+//delete the card
+document.querySelector('#deletecard').addEventListener('click', function(e) {
+  const list = document.querySelector('.cardContainer');
+  const elements = list.querySelectorAll('my-card');
+
+  if(elements.length !== 1)
+  {
+    const last = elements[elements.length -1];
+    last.remove();
+  }
+})
+</script>
+
+</body>
 </html>
