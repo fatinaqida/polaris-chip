@@ -191,8 +191,8 @@ export class counterapp extends LitElement {
   static get properties() {
     return {
       number: { type: Number, reflect: true },
-      btnmin: { type: Number, reflect: true },
-      btnmax: { type: Number, reflect: true },
+      min: { type: Number, reflect: true },
+      max: { type: Number, reflect: true },
     };
   }
 
