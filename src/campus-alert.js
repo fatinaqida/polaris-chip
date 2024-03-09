@@ -8,22 +8,26 @@ export class campusalert extends LitElement {
     
       constructor() {
         super();
+        this.notification = "warning";
         this.date = "NOVEMBER 17, 2023 12:00 AM";
         this.title = "Alert";
         this.sticky = false;
         this.opened = true;
         this.link = "https://www.psu.edu/news/";
-        this.text = "Occaecat laboris incididunt ea labore quis in qui commodo velit cillum et commodo. Dolore consectetur eu eu reprehenderit anim fugiat in nostrud anim magna enim nisi. Mollit est incididunt sint aliqua duis. Deserunt ut velit deserunt fugiat eiusmod. Do incididunt laborum aliqua cupidatat adipisicing fugiat reprehenderit cillum id. Minim minim elit occaecat id velit fugiat ea. Aliqua excepteur ea excepteur cillum esse voluptate non elit laboris laboris esse est sunt incididunt ullamco. ";
+        this.text = "Hello There";
+        this.closed = (localStorage.getItem("close") == "true"? true : false);
       }
 
     static get styles () {
         return css`
 
           :host {
-            --basic-color: #fcb900;
+            --basic-color: #ffd100;
             --text-color: black;
             --foreground-text-color: #000321;
             --background-color: #ffffff;
+            --side-color: #bf8226;
+            --open-height: 250px;
             display: flex;
             color: var(--text-color);
             background: var(--basic-color);
@@ -40,27 +44,62 @@ export class campusalert extends LitElement {
             position: sticky;
             top: 0;
             opacity: 1.0;
+            z-index: 1;
           }
 
-          :host([status="alert"]) {
+          :host([notification="alert"]) {
             --basic-color: #bf3026;
-            --background-color: #000000;
-            --foreground-text-color: #ffffff;
-            --background-text-color: #ffffff;
+            --background-color: #fffffff4;
+            --foreground-text-color: #000000;
+            --background-text-color: #000000;
+            --side-color: black;
           }
 
-          :host([status="notice"]) {
-            --basic-color: lightblue;
-            --background-color: blue;
-            --foreground-text-color: #ffffff;
-            --background-text-color: #ffffff;
+          :host([notification="notice"]) {
+            --basic-color: #5BA0ED;
+            --background-color: #ffffff;
+            --foreground-text-color: #000000;
+            --background-text-color: #000000;
+            --side-color: #f17612;
+          }
+
+          :host([notification="spring break"]) {
+            --basic-color: #ed5ba4;
+            --background-color: #ffffff;
+            --foreground-text-color: #000000;
+            --background-text-color: #000000;
+            --side-color: #7a1469;
+          }
+
+          :host([closed]) {
+            height: 50px;
+            transition: all 200ms 200ms linear;
+            background: var(--basic-color);
+          }
+
+          :host([sticky]) {
+            position: sticky;
+            top: 0;
+          }
+
+          :host(:not([closed])) .content::before {
+            display: inline-flex;
+            content:" ";
+            width: 0;
+            height: 0;
+            position: absolute;
+            bottom: 2rem;
+            left: -0.4rem;
+            border-left: 35px solid transparent;
+            border-right: 0px solid transparent;
+            border-bottom: 30px solid var(--basic-color);
+            transform: skew(20deg);
           }
 
           .datecontainer {
             width: 300px;
             transform: skew(20deg);
-            background-color: #ff6900;
-            padding: 100px 0px;
+            background-color: var(--side-color);
             text-align: justify;
             display: inline-flex;
             margin-left: -150px;
@@ -77,8 +116,8 @@ export class campusalert extends LitElement {
           }
 
           .alert-icon {
-            max-width: 46px;
-            max-height: 46px;
+            max-width: 48px;
+            max-height: 48px;
             padding: 20px 38px 20px 12px;
             color: var(--foreground-text-color);
             stroke: var(--foreground-text-color);
@@ -101,20 +140,6 @@ export class campusalert extends LitElement {
             position: relative;
           }
 
-          .box::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            width: 1023px;
-            height: 100%;
-            max-height: 258px;
-            transform: skew(20deg);
-            background: var(--foreground-color);
-          }
-
           .textcontainer {
             margin: auto;
             width: 1200px;
@@ -135,7 +160,7 @@ export class campusalert extends LitElement {
             //float: right;
             width: 300px;
             transform: skew(20deg);
-            background-color: #ff6900;
+            background-color: var(--side-color);
             padding: 16px;
             text-align: center;
             display: inline-flex;
@@ -155,20 +180,15 @@ export class campusalert extends LitElement {
           }
     `}
 
-
-    toggleAlert() {
-      this.opened =!this.opened;
-      localStorage.setItem("campus-alert-opened-state", this.opened);
-    }
-
     render() {
-
+        const message = this.closed ? "Campus Alert" : this.text;
+        const datetime = this.closed ? "" : this.date;
         return html` 
         
         <div class="cardcontainer">
           <div class="datecontainer">
             <div class="datecard">
-              ${this.date}
+              ${datetime}
             </div>
           </div>
           
@@ -205,7 +225,7 @@ export class campusalert extends LitElement {
 
             <div class="textcontainer">
               <slot>
-                ${this.text}
+                ${message}
               </slot>
             </div>
           </div>
@@ -219,12 +239,34 @@ export class campusalert extends LitElement {
           
     `;}
 
+    updated(changedProperties) {
+      if (changedProperties.has("closed"))
+      {
+        if (this.closed)
+        {
+          localStorage.setItem("close", (this.closed).toString());
+        }
+
+        else
+        {
+          localStorage.removeItem("close");
+        }
+      }
+    }
+
+    toggleButton()
+    {
+      this.closed = !this.closed;
+    }
+
     static get properties() {
         return {
         date: { type: String, reflect: true },
         text: { type: String, reflect: true }, 
         sticky: { type: Boolean, reflect: true }, 
-        opened: { type: Boolean, reflect: true }
+        opened: { type: Boolean, reflect: true }, 
+        closed: { type: Boolean, reflect: true }, 
+        link: { type: String, reflect: true }
     };
   }
 }
