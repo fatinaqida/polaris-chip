@@ -14,7 +14,7 @@ export class campusalert extends LitElement {
         this.sticky = false;
         this.opened = true;
         this.link = "https://www.psu.edu/news/";
-        this.text = "Hello There";
+        this.text = "Occaecat laboris incididunt ea labore quis in qui commodo velit cillum et commodo. Dolore consectetur eu eu reprehenderit anim fugiat in nostrud anim magna enim nisi. Mollit est incididunt sint aliqua duis. Deserunt ut velit deserunt fugiat eiusmod. Do incididunt laborum aliqua cupidatat adipisicing fugiat reprehenderit cillum id. Minim minim elit occaecat id velit fugiat ea. Aliqua excepteur ea excepteur cillum esse voluptate non elit laboris laboris esse est sunt incididunt ullamco.";
         this.closed = (localStorage.getItem("close") == "true"? true : false);
       }
 
@@ -24,7 +24,7 @@ export class campusalert extends LitElement {
           :host {
             --basic-color: #ffd100;
             --text-color: black;
-            --foreground-text-color: #000321;
+            --foreground-color: #000321;
             --background-color: #ffffff;
             --side-color: #bf8226;
             --open-height: 250px;
@@ -50,7 +50,7 @@ export class campusalert extends LitElement {
           :host([notification="alert"]) {
             --basic-color: #bf3026;
             --background-color: #fffffff4;
-            --foreground-text-color: #000000;
+            --foreground-color: #000000;
             --background-text-color: #000000;
             --side-color: black;
           }
@@ -58,7 +58,7 @@ export class campusalert extends LitElement {
           :host([notification="notice"]) {
             --basic-color: #5BA0ED;
             --background-color: #ffffff;
-            --foreground-text-color: #000000;
+            --foreground-color: #000000;
             --background-text-color: #000000;
             --side-color: #f17612;
           }
@@ -66,7 +66,7 @@ export class campusalert extends LitElement {
           :host([notification="spring break"]) {
             --basic-color: #ed5ba4;
             --background-color: #ffffff;
-            --foreground-text-color: #000000;
+            --foreground-color: #000000;
             --background-text-color: #000000;
             --side-color: #7a1469;
           }
@@ -85,15 +85,15 @@ export class campusalert extends LitElement {
           :host(:not([closed])) .content::before {
             display: inline-flex;
             content:" ";
-            width: 0;
-            height: 0;
             position: absolute;
-            bottom: 2rem;
-            left: -0.4rem;
             border-left: 35px solid transparent;
             border-right: 0px solid transparent;
+            bottom: 2rem;
             border-bottom: 30px solid var(--basic-color);
             transform: skew(20deg);
+            left: -0.4rem;
+            width: 0;
+            height: 0;
           }
 
           .datecontainer {
@@ -115,12 +115,12 @@ export class campusalert extends LitElement {
             font-weight: bold;
           }
 
-          .alert-icon {
+          .mark {
             max-width: 48px;
             max-height: 48px;
             padding: 20px 38px 20px 12px;
-            color: var(--foreground-text-color);
-            stroke: var(--foreground-text-color);
+            color: var(--foreground-color);
+            stroke: var(--foreground-color);
           }   
 
           .cardcontainer {
@@ -149,7 +149,7 @@ export class campusalert extends LitElement {
             font-size: 18px;
             letter-spacing: 0.5px;
             line-height: 20px;
-            color: var(--foreground-text-color);
+            color: var(--foreground-color);
             text-size-adjust: 100%;
             font-weight: bold;
             font-style: italic;
@@ -157,7 +157,6 @@ export class campusalert extends LitElement {
 
           .closebutton {
             padding: 16px 32px 32px 32px;
-            //float: right;
             width: 300px;
             transform: skew(20deg);
             background-color: var(--side-color);
@@ -194,9 +193,9 @@ export class campusalert extends LitElement {
           
           <div class="box">
             <div class="content">
-              <!-- Exclamation Mark-->
+              <!-- Exclamation Mark (!) with circle-->
               <svg
-              class="alert-icon"
+              class="mark"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 82 82"
             >
