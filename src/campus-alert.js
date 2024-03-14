@@ -74,7 +74,7 @@ export class campusalert extends LitElement {
           :host([closed]) {
             height: 50px;
             transition: all 200ms 200ms linear;
-            background: var(--basic-color);
+            background-color: var(--basic-color);
           }
 
           :host([sticky]) {
@@ -88,7 +88,7 @@ export class campusalert extends LitElement {
             position: absolute;
             border-left: 35px solid transparent;
             border-right: 0px solid transparent;
-            bottom: 2rem;
+            bottom: 3rem;
             border-bottom: 30px solid var(--basic-color);
             transform: skew(20deg);
             left: -0.4rem;
@@ -142,8 +142,8 @@ export class campusalert extends LitElement {
 
           .textcontainer {
             margin: auto;
-            width: 1200px;
-            max-width: 1050px;
+            width: 800px;
+            max-width: 1500px;
             min-width: 150px;
             max-height: 180px;
             font-size: 18px;
