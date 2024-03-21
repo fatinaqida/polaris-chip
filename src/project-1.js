@@ -1,4 +1,5 @@
-import { LitElement, html, css } from 'lit';
+import "@lrnwebcomponents/rpg-character/rpg-character.js";
+import { html, css } from 'lit';
 import { DDD } from "@lrnwebcomponents/d-d-d/d-d-d.js";
 
 export class project1 extends DDD {
@@ -14,6 +15,7 @@ export class project1 extends DDD {
         this.opened = true;
         this.closed = (localStorage.getItem("close") == "true"? true : false);
         this.number = 5;
+        this.party = ["spm6834"];
       }
 
     static get styles () {
@@ -22,7 +24,7 @@ export class project1 extends DDD {
           :host {
             --basic-color: #7ada7a;
             --text-color: black;
-            display: block;
+            display: flex;
             color: var(--text-color);
             background: var(--basic-color);
             margin: auto;
@@ -30,7 +32,7 @@ export class project1 extends DDD {
             font-family: Arial, sans-serif;
             background-clip: padding-box;
             -webkit-text-size-adjust: 100%;
-            width: 500px;
+            width: 590px;
             text-align: center;
             height: 250px;
           }
@@ -39,7 +41,6 @@ export class project1 extends DDD {
             display: inline-block;
             background-color: #e01c1c;
             box-shadow: 0 5px #666;
-            padding: 4px 4px;
             width: 100px;
             text-align: center;
             cursor: pointer; 
@@ -47,7 +48,7 @@ export class project1 extends DDD {
             box-shadow: 0 5px #6b6a6a;
             transition: background-color 0.3s ease;
             margin: auto;
-            margin-top: 170px;
+            margin-top: 10px;
           }
 
         .btnsave:disabled {
@@ -81,7 +82,9 @@ export class project1 extends DDD {
           border-radius: 10px;
           box-shadow: 0 5px #6b6a6a;
           transition: background-color 0.3s ease;
-          margin: auto;
+          margin: 0 auto;
+          margin-top: 10px;
+          margin-bottom: 20px;
         }
 
     `}
@@ -89,36 +92,33 @@ export class project1 extends DDD {
     render() {
         return html` <confetti-container id="confetti">
           <div id="container">
-            <br>
+            
             <input type="text" class="input" name="fname">
             <button class="btnadd">Add</button>
             <button class="btnremove">Remove</button>
-            <br>
+            
+            <div>
+              <rpg-character walking seed=${this.party[0]}></rpg-character>
+              <rpg-character walking seed=${this.party[1]}></rpg-character>
+              <rpg-character walking seed=${this.party[2]}></rpg-character>
+              <rpg-character walking seed=${this.party[3]}></rpg-character>
+              <rpg-character walking seed=${this.party[4]}></rpg-character>
+            </div>
             <button class="btnsave" @click="${this.makeItRain}" ?disabled="${this.inputcount < this.number}">Save</button>
           </div>        
         </confetti-container>  
     `;}
+
+    addItem(){
+      input = document.querySelector(".search-input").value;
+      this.item = {...this.item, item}
+    }
 
     toggleButton()
     {
       this.closed = !this.closed;
     }
 
-    updated(changedProperties) {
-      if (changedProperties.has("closed"))
-      {
-        if (this.closed)
-        {
-          localStorage.setItem("close", (this.closed).toString());
-        }
-
-        else
-        {
-          localStorage.removeItem("close");
-        }
-      }
-    }
-    
     makeItRain() {
     // this is called a dynamic import. It means it won't import the code for confetti until this method is called
     // the .then() syntax after is because dynamic imports return a Promise object. Meaning the then() code
@@ -146,6 +146,7 @@ export class project1 extends DDD {
         opened: { type: Boolean, reflect: true },
         number: { type: String, reflect: true }, 
         inputcount: { type: String, reflect: true },
+        party: { type: String, reflect: true }
     };
   }
 }
