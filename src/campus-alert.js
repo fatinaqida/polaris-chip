@@ -105,6 +105,10 @@ export class campusalert extends LitElement {
             margin-left: -150px;
           }
 
+          .datecontainer[closed] {
+            background-color: var(--basic-color);
+          }
+
           .datecard {
             margin: auto;
             width: 80px;
@@ -164,6 +168,10 @@ export class campusalert extends LitElement {
             text-align: center;
             display: inline-flex;
             margin-right: -500px;
+          }
+
+          .closebutton[closed] {
+            background-color: var(--basic-color);
           }
 
           .closebuttoncontainer {
