@@ -10,12 +10,11 @@ export class project1 extends DDD {
     
       constructor() {
         super();
-        this.input = "";
+        //this.input = "";
         this.inputcount = 5;
-        this.opened = true;
-        this.closed = (localStorage.getItem("close") == "true"? true : false);
         this.number = 5;
-        this.party = ["spm6834"];
+        this.party = [];
+        this.userName = null;
       }
 
     static get styles () {
@@ -23,23 +22,23 @@ export class project1 extends DDD {
 
           /**use var(ddd) for the height, width */
           :host {
-            --basic-color: #7ada7a;
-            --text-color: black;
+            --basic-color: black;
+            --text-color: #cfa0f8;
             display: flex;
             color: var(--text-color);
             background: var(--basic-color);
-            margin: auto;
+            margin: 0 auto;
             font-size: 14px; 
             font-family: Arial, sans-serif;
             background-clip: padding-box;
             -webkit-text-size-adjust: 100%;
-            width: 590px;
+            width: 100%;
             text-align: center;
-            height: var(--project1-height, 250px);
+            height: var(--dd-spacing, 600px);
           }
 
           .btnsave {
-            display: inline-block;
+            display: block;
             background-color: #e01c1c;
             box-shadow: 0 5px #666;
             width: 100px;
@@ -49,7 +48,6 @@ export class project1 extends DDD {
             box-shadow: 0 5px #6b6a6a;
             transition: background-color 0.3s ease;
             margin: auto;
-            margin-top: 10px;
           }
 
         .btnsave:disabled {
@@ -62,13 +60,14 @@ export class project1 extends DDD {
             background-color: #5BA0ED;
         }
 
-        .container {
+        #container {
             text-align: center;
-            display: flex;
-            align-items: center;
+            display: relative;
+            text-align: center;
             justify-content: center;
-            width: 50px;
-            height: 100%;
+            width: 1200px;
+            height: var(--dd-spacing, 500px);
+            margin: 0 auto;
         }
 
         .btnadd,
@@ -88,25 +87,63 @@ export class project1 extends DDD {
           margin-bottom: 20px;
         }
 
+        .userName {
+          width: 100px;
+        }
+
+        .characterName {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: clip;
+          width: 100%;
+        }
+
+        .input-wrapper {
+          display: block;
+          text-align: center;
+          margin: 0 auto;
+        }
+
+        .rpg-selector {
+          display: inline-flex;
+          margin: var(---dd-spacing-5);
+          padding: var(---ddd-spacing-1);
+          width: 250px;
+        }
+
+        .rpg-character {
+            opacity: 0.4;
+        }
+
+        .rpg {
+          display: inline-block;
+        }
     `}
 
     /**there's an easier way for the party */
     render() {
         return html` <confetti-container id="confetti">
+          <h1>Haxcms-Party-UI</h1>
           <div id="container">
             
-            <input type="text" class="input" name="fname">
-            <button class="btnadd">Add</button>
-            <button class="btnremove">Remove</button>
+            <div class="input-wrapper">
+              <input type="text" id="inputbox" placeholder="search username">
+              <button class="btnadd" @click="${this.addItem}" >Add</button>
+              <button class="btnremove" @click="${this.removeitem}" >Remove</button>
+            </div>
             
-            <div class="party">
-              <rpg-character walking seed=${this.party[0]}></rpg-character>
-              <rpg-character walking seed=${this.party[1]}></rpg-character>
-              <rpg-character walking seed=${this.party[2]}></rpg-character>
-              <rpg-character walking seed=${this.party[3]}></rpg-character>
-              <rpg-character walking seed=${this.party[4]}></rpg-character>
+            <div class="rpg">
+              ${this.party.map(user => html` 
+              <div class="rpg-selector">
+                <rpg-character class="character" seed="${user}" walking></rpg-character>
+                <p class="characterName">
+                  ${user}
+                </p>
+              </div>
+              `)}
             </div>
             <button class="btnsave" @click="${this.makeItRain}" ?disabled="${this.inputcount < this.number}">Save</button>
+
           </div>        
         </confetti-container>  
     `;}
@@ -114,13 +151,28 @@ export class project1 extends DDD {
     /** add lowercase function*/
 
     addItem(){
-      input = document.querySelector(".search-input").value;
-      this.item = {...this.item, item}
-    }
+      const input = this.shadowRoot.getElementById('inputbox');
+      const username = input.value.trim();
 
-    toggleButton()
-    {
-      this.closed = !this.closed;
+      if (username !== '' && this.party.length < this.number) {
+        if (/^[a-z0-9]{1,10}$/.test(username))
+        {
+          if(!this.party.includes(username))
+          {
+            this.party.push(username);
+            this.value = '';
+            this.requestUpdate();
+          }
+
+          else {
+            window.alert("Username is already in the party.");
+          }
+        }
+        
+        else {
+          window.alert("Username must be lowercase and numbers only.");
+        }
+      }
     }
 
     makeItRain() {
@@ -135,6 +187,7 @@ export class project1 extends DDD {
     
   static get properties() {
         return {
+          ...super.properties,
         input: { type: String, reflect: true },
         closed: { type: Boolean, reflect: true },
         opened: { type: Boolean, reflect: true },
