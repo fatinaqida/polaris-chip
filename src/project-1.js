@@ -24,7 +24,6 @@ export class project1 extends DDD {
   static get styles() {
     return css`
 
-          /**use var(ddd) for the height, width */
           :host {
             --basic-color: var(--ddd-theme-default-roarLight);
             --text-color: var(--ddd-theme-default-potentialMidnight);
@@ -57,8 +56,9 @@ export class project1 extends DDD {
             transition: background-color 0.3s ease;
             margin-top: var(--basic-spacing);
             margin: auto;
-          }
+        }
 
+        /** Container that wrap the card */
         #container {
           text-align: center;
           justify-content: center;
@@ -108,14 +108,13 @@ export class project1 extends DDD {
         }
 
         .rpg-character {
-            opacity: 0.4;
-      
+          opacity: 0.4;
         }
 
         rpg-character:hover {
-            border: 2px solid var(--ddd-theme-default-discoveryCoral);
-      
-          }
+          border: 2px solid var(--ddd-theme-default-discoveryCoral);
+        }
+
         .rpg-party {
           max-width: 90vw;
           justify-content: center;
@@ -124,9 +123,33 @@ export class project1 extends DDD {
           flex-direction: row;
           flex-wrap: wrap;
         }
+
+        /**Adaptation to different screen size */
+        @media (max-width: 500px) {
+          #container {
+            width: auto; 
+            margin: 20px; 
+            padding: 10px; 
+          }
+
+          .rpg-selector {
+            width: 100%;
+          }
+        } 
+
+        @media (max-width: 1000px) {
+          #container {
+            width: auto; 
+            margin: 45px; 
+            padding: 50px; 
+          }
+
+          .rpg-selector {
+            width: 100%;
+          }
+        } 
     `}
 
-  /**there's an easier way for the party */
   render() {
     return html`
       <audio id="coin-sound" src="media/coin sound.wav"></audio>
@@ -134,29 +157,35 @@ export class project1 extends DDD {
       <confetti-container id="confetti">
           <h1 class="header">Haxcms-Party-UI</h1>
           <div id="container">
+            <!-- Block elements for text input, text button, and remove button -->
             <div class="input-wrapper">
               <input type="text" id="inputbox" placeholder="search username">
               <button class="btnadd" @click="${this.addItem}" >Add</button>
               <button class="btnremove" @click="${this.removeUser}" >Remove</button>
             </div>
+
+            <!-- BLock element for rpg-characters -->
             <div class="rpg-party">
               ${this.party.map((user, index) => html` 
               <div class="rpg-selector" @click="${(e) => this.selectCharacter(e, index)}">
-                        <rpg-character class="character" seed="${user}" walking></rpg-character>
+                <rpg-character class="character" seed="${user}" walking></rpg-character>
+
+                <!-- Username of the rpg-character -->
                 <p class="characterName">
                   ${user}
                 </p>
               </div>
               `)}
             </div>
+
+            <!-- Block element for the Save button -->
             <button class="btnsave" @click="${this.saveItem}" >Save</button>
           </div>        
         </confetti-container>  
     `;
   }
 
-  /** add lowercase function*/
-
+  /** Save button function*/
   saveItem() {
     if (this.party.length >= 1) {
       const myArray = this.party.toString();
@@ -170,6 +199,7 @@ export class project1 extends DDD {
     }
   }
 
+  /** To select the index closest to the rpg-character. Used in Remove button */
   selectCharacter(event, index) {
     const selectedCharacter = event.target.closest('.rpg-selector');
     const selectedUserName = selectedCharacter.querySelector('.characterName').innerText;
@@ -179,13 +209,14 @@ export class project1 extends DDD {
     this.index = selectedIndex;
   }
 
+  /** Remove button function */
   removeUser() {
     this.party.splice(this.index, 1);
     this.party = [...this.party];
     this.shadowRoot.getElementById("remove-sound").play();
   }
 
-
+  /** To display the item in the array */
   displayItem(item) {
     if (this.saved) {
       return html`<rpg-character walking seed="${item}"></rpg-character>`;
@@ -194,10 +225,13 @@ export class project1 extends DDD {
     }
   }
 
+  /** Add button function */
   addItem() {
     const input = this.shadowRoot.getElementById('inputbox');
     const username = input.value.trim();
 
+    /** Restriction for the text input: only accept lowercase letters and numbers */
+    /** Addition: Sqet alphabet limitation to 10 */
     if (username !== '') {
       if (/^[a-z0-9]{1,10}$/.test(username)) {
         if (!this.party.includes(username)) {
@@ -217,6 +251,7 @@ export class project1 extends DDD {
     }
   }
 
+  /** To make confetti when Save button is on clicked*/
   makeItRain() {
     import("@lrnwebcomponents/multiple-choice/lib/confetti-container.js").then(
       (module) => {
@@ -234,9 +269,6 @@ export class project1 extends DDD {
   static get properties() {
     return {
       ...super.properties,
-      input: { type: String, reflect: true },
-      number: { type: String, reflect: true },
-      inputcount: { type: String, reflect: true },
       party: { type: Array, reflect: true },
       changed: { type: Boolean, reflect: true },
       saved: { type: Boolean, reflect: true },
