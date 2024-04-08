@@ -193,6 +193,7 @@ export class project1 extends DDD {
       this.saved = true;
       this.shadowRoot.getElementById("remove-sound").play();
       this.makeItRain();
+      window.alert("Party members saved: " + this.party + "\n" +"You can now close the tab.");
     }
     else {
       window.alert("You need at least 1 party member to save.");
